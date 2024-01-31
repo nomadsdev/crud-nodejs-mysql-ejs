@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        *{
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flex justify-center">
+        <div class="p-10">
+            <h1 class="text-2xl text-blue-600">CRUD App</h1>
+            <div class="bg-blue-600 w-5 h-1 rounded-full"></div>
+        </div>
+    </div>
+    <div class="flex justify-center p-10">
+        <form action="/add" method="POST" class="flex gap-4">
+            <input type="text" name="name" placeholder="Name" class="border border-blue-600 rounded-full text-blue-600 px-2 text-xs">
+            <input type="email" name="email" placeholder="Email" class="border border-blue-600 rounded-full text-blue-600 px-2 text-xs">
+            <button type="submit" class="bg-blue-600 px-5 py-1 rounded-full text-white text-xs hover:bg-blue-700 transition">Add</button>
+        </form>
+    </div>
+    <div class="flex justify-center p-10">
+        <ul>
+            <% data.forEach(function(item) { %>
+                <li class="flex gap-4">
+                    <span class="text-blue-600"><%= item.name %></span> <span class="text-indigo-600"><%= item.email %></span>
+                    <a href="#" class="edit-link bg-yellow-500 text-white px-5 py-1 rounded-full text-xs hover:bg-yellow-600 transition">Edite</a>
+                    <a href="/delete/<%= item.id %>" class="bg-red-500 text-white px-5 py-1 rounded-full text-xs hover:bg-red-600 transition">Delete</a>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+    <div>
+        <% if (editUser) { %>
+            <div class="hidden fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4">Edit User</h2>
+                    <form action="/edit/<%= editUser.id %>" method="POST" class="flex flex-col gap-4">
+                        <input type="text" name="name" value="<%= editUser.name %>" placeholder="Name" class="border border-gray-300 rounded-md px-4 py-2">
+                        <input type="email" name="email" value="<%= editUser.email %>" placeholder="Email" class="border border-gray-300 rounded-md px-4 py-2">
+                        <div class="flex justify-end gap-4">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full text-xs hover:bg-blue-700 transition duration-300">Update</button>
+                            <button type="button" class="bg-red-600 text-white px-4 py-2 rounded-full text-xs hover:bg-red-700 transition duration-300" id="closeBtn">closen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        document.querySelectorAll('.edit-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('.hidden').classList.remove('hidden');
+            });
+        });
+        document.getElementById('closeBtn').addEventListener('click', () => {
+        document.querySelector('.fixed').classList.add('hidden');
+        });
+    </script>
+    
+</body>
+</html>
